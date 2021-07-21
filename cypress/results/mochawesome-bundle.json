@@ -1,0 +1,151 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 3,
+    "passes": 1,
+    "pending": 0,
+    "failures": 2,
+    "start": "2021-07-21T15:59:31.112Z",
+    "end": "2021-07-21T15:59:51.176Z",
+    "duration": 18463,
+    "testsRegistered": 3,
+    "passPercent": 33.333333333333336,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "eb27b4d7-fe24-41a0-bc95-41977966ae8a",
+      "title": "",
+      "fullFile": "cypress/integration/Placeholder.spec.js",
+      "file": "cypress/integration/Placeholder.spec.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "c95d9d84-7e0b-4085-8e9a-979ac4f2c551",
+          "title": "Api Tests to validate emails format",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "Validate comments email format",
+              "fullTitle": "Api Tests to validate emails format Validate comments email format",
+              "timedOut": null,
+              "duration": 12759,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "// first, let's find out the userId of the Delphine username\nlet Id;\ncy.request('https://jsonplaceholder.cypress.io/users').its('body').then(users => {\n  // yields the response object\n  cy.log('validate emails format and find user Delphine');\n  users.forEach(user => {\n    expect(Functions.ValidateEmail(user.email)).to.be.true; //Get the User Id for Delphine username  \n    if (user.username == 'Delphine') {\n      Id = user.id;\n    }\n  });\n  if (Id != null) {\n    cy.request('https://jsonplaceholder.typicode.com/posts?userId=' + Id) //Get all posts for the user\n    .its('body').then(posts => {\n      if (posts != null) {\n        posts.forEach(post => {\n          cy.request('https://jsonplaceholder.typicode.com/posts/' + post.id + '/comments') //Get all comments for each user post\n          .its('body').then(comments => {\n            if (comments != null) {\n              cy.log('validate emails format');\n              comments.forEach(comment => {\n                expect(Functions.ValidateEmail(comment.email)).to.be.true;\n              });\n            } else cy.log('No comments available to validate');\n          });\n        });\n      } else cy.log('No posts available to validate');\n    });\n  } else cy.log('username is not availabe to validate');\n});",
+              "err": {},
+              "uuid": "f8f4a251-e643-4d29-85e3-ef6bc8eec903",
+              "parentUUID": "c95d9d84-7e0b-4085-8e9a-979ac4f2c551",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "validate posting a user with an invalid email",
+              "fullTitle": "Api Tests to validate emails format validate posting a user with an invalid email",
+              "timedOut": null,
+              "duration": 2683,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "cy.request('POST', 'https://jsonplaceholder.cypress.io/users', {\n  name: \"Leanne Graham\",\n  username: \"Bret\",\n  email: \"Invalidemailformat<div>\"\n}).then(response => {\n  console.log(response);\n  expect(response).property('status').to.not.equal(201); // new commment should not be created\n});",
+              "err": {
+                "message": "AssertionError: expected 201 to not equal 201",
+                "estack": "AssertionError: expected 201 to not equal 201\n    at Context.eval (http://localhost:55102/__cypress/tests?p=cypress\\integration\\Placeholder.spec.js:143:50)",
+                "diff": ""
+              },
+              "uuid": "24c27380-c02d-4b69-9a56-9c944b53d2e8",
+              "parentUUID": "c95d9d84-7e0b-4085-8e9a-979ac4f2c551",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "validate posting a comment with an invalid email",
+              "fullTitle": "Api Tests to validate emails format validate posting a comment with an invalid email",
+              "timedOut": null,
+              "duration": 3021,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "cy.request('POST', 'https://jsonplaceholder.cypress.io/comments', {\n  postId: 1,\n  name: 'Cypress Test',\n  email: \"invalid emailformat\",\n  body: 'Fast, easy and reliable testing for anything that runs in a browser.'\n}) // save the new post from the response\n.then(response => {\n  console.log(response);\n  expect(response).property('status').to.not.equal(201); // new commment should not be created\n});",
+              "err": {
+                "message": "AssertionError: expected 201 to not equal 201",
+                "estack": "AssertionError: expected 201 to not equal 201\n    at Context.eval (http://localhost:55102/__cypress/tests?p=cypress\\integration\\Placeholder.spec.js:155:50)",
+                "diff": ""
+              },
+              "uuid": "7e547c4f-c1ec-4453-afb4-1511f81ffe7f",
+              "parentUUID": "c95d9d84-7e0b-4085-8e9a-979ac4f2c551",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "f8f4a251-e643-4d29-85e3-ef6bc8eec903"
+          ],
+          "failures": [
+            "24c27380-c02d-4b69-9a56-9c944b53d2e8",
+            "7e547c4f-c1ec-4453-afb4-1511f81ffe7f"
+          ],
+          "pending": [],
+          "skipped": [],
+          "duration": 18463,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.0.1"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": false,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "6.2.2"
+    },
+    "marge": {
+      "options": {
+        "overwrite": false,
+        "html": false,
+        "json": true
+      },
+      "version": "5.2.0"
+    }
+  }
+}
