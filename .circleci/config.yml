@@ -7,4 +7,7 @@ workflows:
       - cypress/run:
           post-steps:
             - store_artifacts:
+                run: npm run report:generate
                 path: mochawesome-report
+
+
