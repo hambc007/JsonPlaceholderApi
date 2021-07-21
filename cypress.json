@@ -2,7 +2,7 @@
   "reporter": "../node_modules/mochawesome/src/mochawesome.js",
   "reporterOptions": {
       "overwrite": false,
-      "html": false,
+      "html": true,
       "json": true
   }
 }
