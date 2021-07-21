@@ -21,31 +21,36 @@ context('Api Tests to validate emails format', () => {
               Id=user.id;
             }
           }});
-        if(Id != null) { 
-          cy.request('https://jsonplaceholder.typicode.com/posts?userId='+Id)
-            //Get all posts for the user
-            .its('body')
-            .then((posts)=> {
-            // yields the response for all posts by the user
-              if(posts != null){ 
-                posts.forEach(post => {
-                  cy.request('https://jsonplaceholder.typicode.com/posts/'+post.id+'/comments')
-                  //Get all comments for each user post
-                  .its('body')
-                  .then((comments)=> {
-                    if(comments != null){  
-                      cy.log('validate emails format') 
-                      comments.forEach(comment => {
-                        expect(Functions.ValidateEmail(comment.email)).to.be.true;
-                      }) 
-                    } else cy.log('No comments available to validate') })           
-              });
-              } 
-              else 
-              cy.log('No posts available to validate') })
-      }
-      else 
-        cy.log('username is not availabe to validate') })      
+          if(Id != null) { 
+            cy.request('https://jsonplaceholder.typicode.com/posts?userId='+Id)
+              //Get all posts for the user
+              .its('body')
+              .then((posts)=> {
+              // yields the response for all posts by the user
+                if(posts != null){ 
+                  posts.forEach(post => {
+                    cy.request('https://jsonplaceholder.typicode.com/posts/'+post.id+'/comments')
+                    //Get all comments for each user post
+                    .its('body')
+                    .then((comments)=> {
+                      if(comments != null){  
+                        cy.log('validate emails format') 
+                        comments.forEach(comment => {
+                          expect(Functions.ValidateEmail(comment.email)).to.be.true;
+                        }) 
+                      } 
+                      else 
+                      cy.log('No comments available to validate') 
+                    })           
+                  })
+                }   
+                else 
+                cy.log('No posts available to validate') 
+              })
+          }
+          else 
+          throw new Error("test fails here, the Username is not available to validate")
+        })      
   })
   it('validate posting a user with an invalid email',() => {
     cy.request('POST', 'https://jsonplaceholder.cypress.io/users', {       
