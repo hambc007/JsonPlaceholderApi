@@ -1,7 +1,7 @@
 {
   "reporter": "../node_modules/mochawesome/src/mochawesome.js",
   "reporterOptions": {
-      "overwrite": false,
+      "overwrite": true,
       "html": true,
       "json": true
   }

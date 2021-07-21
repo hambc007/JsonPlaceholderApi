@@ -1,30 +1,36 @@
 const Functions = require("../support/Functions")
+const TestData = require("../support/TestData")
+
 
 context('Api Tests to validate emails format', () => {
-  it('Validate comments email format', () => {
-    // first, let's find out the userId of the Delphine username
+  it('Validate Users email format and find specific user', () => {
+    // variable to store the User Id
     let Id
+    // Get all Users
     cy.request('https://jsonplaceholder.cypress.io/users')
       .its('body')
       .then((users) => {
-      // yields the response object
-        cy.log('validate emails format and find user Delphine')
+      // yields the response for users
+        cy.log('validate emails format and find user')
         users.forEach(user => {
-          expect(Functions.ValidateEmail(user.email)).to.be.true;
-        //Get the User Id for Delphine username  
-          if (user.username == 'Delphine') {
-            Id=user.id;
-          }
-        });
-      if(Id != null) { 
-        cy.request('https://jsonplaceholder.typicode.com/posts?userId='+Id)
-        //Get all posts for the user
-          .its('body')
-          .then((posts)=> {
-            if(posts != null){ 
-              posts.forEach(post => {
-                cy.request('https://jsonplaceholder.typicode.com/posts/'+post.id+'/comments')
-                //Get all comments for each user post
+          if(users != null) { 
+            //Validate the emails format for all users
+            expect(Functions.ValidateEmail(user.email)).to.be.true;
+            //Get the User Id for the needed username  
+            if (user.username == TestData.User) {
+              Id=user.id;
+            }
+          }});
+        if(Id != null) { 
+          cy.request('https://jsonplaceholder.typicode.com/posts?userId='+Id)
+            //Get all posts for the user
+            .its('body')
+            .then((posts)=> {
+            // yields the response for all posts by the user
+              if(posts != null){ 
+                posts.forEach(post => {
+                  cy.request('https://jsonplaceholder.typicode.com/posts/'+post.id+'/comments')
+                  //Get all comments for each user post
                   .its('body')
                   .then((comments)=> {
                     if(comments != null){  
@@ -34,8 +40,8 @@ context('Api Tests to validate emails format', () => {
                       }) 
                     } else cy.log('No comments available to validate') })           
               });
-            } 
-            else 
+              } 
+              else 
               cy.log('No posts available to validate') })
       }
       else 
@@ -48,8 +54,8 @@ context('Api Tests to validate emails format', () => {
       email: "Invalidemailformat<div>",      
     })
       .then((response) => {
-        console.log(response)
-        expect(response).property('status').to.not.equal(201) // new commment should not be created
+        expect(response).property('status').to.not.equal(201) 
+        // new user should not be created & response status should not be 201
       })
   })
   it('validate posting a comment with an invalid email',() => {
@@ -58,10 +64,10 @@ context('Api Tests to validate emails format', () => {
       name: 'Cypress Test',
       email:"invalid emailformat",
       body: 'Fast, easy and reliable testing for anything that runs in a browser.',
-    }) // save the new post from the response
+    }) 
       .then((response) => {
-        console.log(response)
-        expect(response).property('status').to.not.equal(201) // new commment should not be created
+        expect(response).property('status').to.not.equal(201) 
+        // new commment should not be created & response status should not be 201
       })
   })
 })
