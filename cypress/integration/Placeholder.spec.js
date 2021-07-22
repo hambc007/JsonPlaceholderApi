@@ -61,7 +61,7 @@ context('Api Tests to validate emails format', () => {
     })
       .then((response) => {
         cy.log('expect a bad request response')
-        expect(response).property('status').to.equal(400) 
+        expect(response).property('status').to.be.equal(400) 
         // new user should not be created & response status should not be 201
       })
   })
@@ -74,7 +74,7 @@ context('Api Tests to validate emails format', () => {
     }) 
       .then((response) => {
         cy.log('expect a bad request response')
-        expect(response).property('status').to.equal(400) 
+        expect(response).property('status').to.be.equal(400) 
         // new commment should not be created & response status should not be 201
       })
   }) */
