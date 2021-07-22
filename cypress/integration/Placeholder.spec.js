@@ -51,7 +51,8 @@ context('Api Tests to validate emails format', () => {
           else 
           throw new Error("test fails here, the Username is not available to validate")
         })      
-  }) /*  Commenting the two failed tests to have a succesful build on CircleCi
+  }) 
+  /*  Commenting the two failed tests to have a succesful build on CircleCi
   it('validate posting a user with an invalid email',() => {
     cy.request('POST', 'https://jsonplaceholder.cypress.io/users', {       
       name: "Leanne Graham",
@@ -59,7 +60,8 @@ context('Api Tests to validate emails format', () => {
       email: "Invalidemailformat<div>",      
     })
       .then((response) => {
-        expect(response).property('status').to.not.equal(201) 
+        cy.log('expect a bad request response')
+        expect(response).property('status').to.equal(400) 
         // new user should not be created & response status should not be 201
       })
   })
@@ -71,7 +73,8 @@ context('Api Tests to validate emails format', () => {
       body: 'Fast, easy and reliable testing for anything that runs in a browser.',
     }) 
       .then((response) => {
-        expect(response).property('status').to.not.equal(201) 
+        cy.log('expect a bad request response')
+        expect(response).property('status').to.equal(400) 
         // new commment should not be created & response status should not be 201
       })
   }) */
