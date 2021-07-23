@@ -12,15 +12,16 @@ context('Api Tests to validate emails format', () => {
       .then((users) => {
       // yields the response for users
         cy.log('validate emails format and find user')
-        users.forEach(user => {
-          if(users != null) { 
+        if(users != null) { 
+          users.forEach(user => {
             //Validate the emails format for all users
             expect(Functions.ValidateEmail(user.email)).to.be.true;
             //Get the User Id for the needed username  
             if (user.username == TestData.User) {
               Id=user.id;
             }
-          }});
+          })
+        }
           if(Id != null) { 
             cy.request('https://jsonplaceholder.typicode.com/posts?userId='+Id)
               //Get all posts for the user
