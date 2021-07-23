@@ -13,7 +13,7 @@ context('Api Tests to validate emails format', () => {
       // yields the response for users
         cy.log('validate emails format and find user')
         if(users != null) { 
-          users.forEach(user => {
+          users.forEach((user) => {
             //Validate the emails format for all users
             expect(Functions.ValidateEmail(user.email)).to.be.true;
             //Get the User Id for the needed username  
@@ -29,14 +29,14 @@ context('Api Tests to validate emails format', () => {
               .then((posts)=> {
               // yields the response for all posts by the user
                 if(posts != null){ 
-                  posts.forEach(post => {
+                  posts.forEach((post) => {
                     cy.request('https://jsonplaceholder.typicode.com/posts/'+post.id+'/comments')
                     //Get all comments for each user post
                     .its('body')
                     .then((comments)=> {
                       if(comments != null){  
                         cy.log('validate emails format') 
-                        comments.forEach(comment => {
+                        comments.forEach((comment) => {
                           expect(Functions.ValidateEmail(comment.email)).to.be.true;
                         }) 
                       } 
